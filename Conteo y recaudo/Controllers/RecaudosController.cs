@@ -22,5 +22,11 @@ namespace Conteo_y_recaudo.Controllers
 
             return Ok(recaudos);
         }
+
+        [HttpPost]
+        public async Task InsertarRecaudosAsync(ConsultaRecaudo consultaRecaudo)
+        {
+            await _recaudoService.InsertarRecaudosAsync(consultaRecaudo);
+        }
     }
 }

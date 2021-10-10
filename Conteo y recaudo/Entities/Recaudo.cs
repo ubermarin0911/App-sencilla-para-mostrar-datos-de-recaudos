@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conteo_y_recaudo.Entities
 {
@@ -8,7 +9,8 @@ namespace Conteo_y_recaudo.Entities
         public string Sentido { get; set; }
         public short Hora { get; set; }
         public string Categoria { get; set; }
-        public long Valor_tabulado { get; set; }
+        [Column("valor_tabulado")]
+        public long ValorTabulado { get; set; }
         public DateTime Fecha { get; set; }
     }
 }
