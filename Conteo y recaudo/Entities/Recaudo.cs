@@ -6,9 +6,9 @@ namespace Conteo_y_recaudo.Entities
     {
         public string Estacion { get; set; }
         public string Sentido { get; set; }
-        public int Hora { get; set; }
+        public short Hora { get; set; }
         public string Categoria { get; set; }
-        public int Valor_tabulado { get; set; }
-        public DateTime fecha { get; set; }
+        public long Valor_tabulado { get; set; }
+        public DateTime Fecha { get; set; }
     }
 }

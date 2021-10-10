@@ -9,5 +9,12 @@ namespace Conteo_y_recaudo.Data
         {
         }
         public DbSet<Recaudo> Recaudos { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("antonio");
+        }
+
     }
 }

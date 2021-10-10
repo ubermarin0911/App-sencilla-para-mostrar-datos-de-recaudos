@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace Conteo_y_recaudo.Services
 {
-    class RecaudoService : IRecaudoService
+    public class RecaudoService : IRecaudoService
     {
-        public Task<IReadOnlyList<Recaudo>> GetRecaudosAsync()
+        private readonly IUnitOfWork _unitOfWork;
+        public RecaudoService(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<Recaudo> InsertarRecaudosAsync(List<Recaudo> recaudo)
+        public async Task<IReadOnlyList<Recaudo>> GetRecaudosAsync()
+        {
+            return await _unitOfWork.Repository<Recaudo>().ListAllAsync();
+        }
+
+        public async Task<Recaudo> InsertarRecaudosAsync(List<Recaudo> recaudo)
         {
             throw new NotImplementedException();
         }
