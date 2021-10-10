@@ -7,8 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;:\Users\Usuario\source\repos\Conteo y recaudo
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace Conteo_y_recaudo
 {
