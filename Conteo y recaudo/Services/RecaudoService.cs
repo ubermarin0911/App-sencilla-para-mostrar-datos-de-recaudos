@@ -113,7 +113,6 @@ namespace Conteo_y_recaudo.Services
             List<RecaudosPorFechaYEstacion> recaudosPorFechaYEstacion;
             List<RecaudosPorEstacion> recaudosPorEstacion;
 
-
             recaudosPorFechaYEstacion = await _context.Recaudos.
                  Where(r => r.Fecha >= fechaUltimos3Meses).
                  GroupBy(r => new { r.Estacion, r.Fecha }).

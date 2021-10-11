@@ -1,6 +1,7 @@
 using Conteo_y_recaudo.Data;
 using Conteo_y_recaudo.Extensions;
 using Conteo_y_recaudo.Helpers;
+using Conteo_y_recaudo.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,11 @@ namespace Conteo_y_recaudo
             services.AddDbContext<RecaudoContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+
             services.AddApplicationServices();
+            services.AddIdentityServices(Configuration);
 
             services.AddControllers();
         }

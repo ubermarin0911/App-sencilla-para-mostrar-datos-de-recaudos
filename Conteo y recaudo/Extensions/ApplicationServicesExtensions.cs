@@ -11,6 +11,7 @@ namespace Conteo_y_recaudo.Extensions
         {
             services.AddScoped<IRecaudoService, RecaudoService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             return services;
