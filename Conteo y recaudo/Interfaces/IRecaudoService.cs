@@ -10,6 +10,6 @@ namespace Conteo_y_recaudo.Interfaces
     {
         Task InsertarRecaudosAsync(ConsultaRecaudo consultaRecaudo);
         Task<RecaudoData> GetRecaudosAsync(RecaudoSpecParams recaudoParams);
-
+        Task<DataReporte> GetDataReporteRecaudo(RecaudoSpecParams recaudoParams);
     }
 }

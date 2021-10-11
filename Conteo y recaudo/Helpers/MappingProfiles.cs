@@ -9,6 +9,9 @@ namespace Conteo_y_recaudo.Helpers
         public MappingProfiles()
         {
             CreateMap<Recaudo, RecaudoARetornarDto>();
+            CreateMap<DataReporte, DataReporteDto>();
+            CreateMap<Entities.RecaudosPorFechaYEstacion, Dto.RecaudosPorFechaYEstacion>();
+            CreateMap<Entities.RecaudosPorEstacion, Dto.RecaudosPorEstacion>();
         }
     }
 }

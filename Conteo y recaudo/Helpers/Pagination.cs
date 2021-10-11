@@ -12,9 +12,18 @@ namespace Conteo_y_recaudo.Helpers
             Data = data;
         }
 
+        public Pagination(int pageIndex, int pageSize, int count, T data)
+        {
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            Count = count;
+            DataObject = data;
+        }
+
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int Count { get; set; }
         public IReadOnlyList<T> Data { get; set; }
+        public T DataObject { get; set; }
     }
 }

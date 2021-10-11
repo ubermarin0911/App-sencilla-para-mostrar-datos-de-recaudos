@@ -39,5 +39,16 @@ namespace Conteo_y_recaudo.Controllers
         {
             await _recaudoService.InsertarRecaudosAsync(consultaRecaudo);
         }
+
+        [HttpGet("dataReporteRecaudo")]
+        public async Task<ActionResult<Pagination<DataReporte>> > GetDataReporteRecaudo([FromQuery] RecaudoSpecParams recaudoParams)
+        {
+            var dataReporteRecaudo = await _recaudoService.GetDataReporteRecaudo(recaudoParams);
+
+            var data = _mapper.Map<DataReporte, DataReporteDto>(dataReporteRecaudo);
+
+            return Ok(new Pagination<DataReporteDto>(recaudoParams.PageIndex,
+            recaudoParams.PageSize, dataReporteRecaudo.TotalItems, data));
+        }
     }
 }

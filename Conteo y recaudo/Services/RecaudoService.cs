@@ -1,6 +1,8 @@
-﻿using Conteo_y_recaudo.Entities;
+﻿using Conteo_y_recaudo.Data;
+using Conteo_y_recaudo.Entities;
 using Conteo_y_recaudo.Interfaces;
 using Conteo_y_recaudo.Specifications;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -17,17 +19,21 @@ namespace Conteo_y_recaudo.Services
     {
         private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
-        public RecaudoService(IUnitOfWork unitOfWork, IConfiguration config)
+        private readonly RecaudoContext _context;
+        
+
+        public RecaudoService(IUnitOfWork unitOfWork, IConfiguration config, RecaudoContext context)
         {
             _unitOfWork = unitOfWork;
             _config = config;
+            _context = context;
         }
 
         public async Task<RecaudoData> GetRecaudosAsync(RecaudoSpecParams recaudoParams)
         {
             var spec = new RecaudoSpecification(recaudoParams);
             var countSpec = new RecaudoConFiltrosCantidadSpecification(recaudoParams);
-            var totalItems = await _unitOfWork.Repository<Recaudo>().CountAsync(countSpec);
+            int totalItems = await _unitOfWork.Repository<Recaudo>().CountAsync(countSpec);
             var recaudos = await _unitOfWork.Repository<Recaudo>().ListAsync(spec);
 
             var recaudosData = new RecaudoData
@@ -35,6 +41,8 @@ namespace Conteo_y_recaudo.Services
                 Recaudos = recaudos,
                 TotalItems = totalItems
             };
+
+           
 
             return recaudosData;
         }
@@ -95,6 +103,54 @@ namespace Conteo_y_recaudo.Services
                     }
                 }
             }
+        }
+
+        public async Task<DataReporte> GetDataReporteRecaudo(RecaudoSpecParams recaudoParams)
+        {
+            DateTime fechaUltimos3Meses = DateTime.Now.AddMonths(-3);
+
+            DataReporte recaudos;
+            List<RecaudosPorFechaYEstacion> recaudosPorFechaYEstacion;
+            List<RecaudosPorEstacion> recaudosPorEstacion;
+
+
+            recaudosPorFechaYEstacion = await _context.Recaudos.
+                 Where(r => r.Fecha >= fechaUltimos3Meses).
+                 GroupBy(r => new { r.Estacion, r.Fecha }).
+                 OrderBy(g => g.Key.Fecha).
+                 Select(g => new RecaudosPorFechaYEstacion
+                 {
+                     Estacion = g.Key.Estacion,
+                     Fecha = g.Key.Fecha,
+                     TotalCantidad = g.Count(),
+                     TotalValor = g.Sum(c => c.ValorTabulado).ToString()
+                 })
+                 .Skip(recaudoParams.PageSize * (recaudoParams.PageIndex - 1))
+                 .Take(recaudoParams.PageSize)
+                 .ToListAsync();
+
+            recaudosPorEstacion = await _context.Recaudos.
+                 Where(r => r.Fecha >= fechaUltimos3Meses).
+                 GroupBy(r => new { r.Estacion}).
+                 Select(g => new RecaudosPorEstacion
+                 {
+                     Estacion = g.Key.Estacion,
+                     TotalCantidad = g.Count(),
+                     TotalValor = g.Sum(c => c.ValorTabulado).ToString()
+                 }).ToListAsync();
+
+            var recaudosTotalCantidad = await _context.Recaudos.Where(r => r.Fecha >= fechaUltimos3Meses).CountAsync();
+            var recaudosTotalValor = await _context.Recaudos.Where(r => r.Fecha >= fechaUltimos3Meses).SumAsync(s => s.ValorTabulado);
+
+            recaudos = new DataReporte
+            {
+                RecaudosFechaEstacion = recaudosPorFechaYEstacion,
+                RecaudosEstacion = recaudosPorEstacion,
+                TotalCantidad = recaudosTotalCantidad,
+                TotalValor = recaudosTotalValor
+            };
+
+            return  recaudos;
         }
     }
 }
