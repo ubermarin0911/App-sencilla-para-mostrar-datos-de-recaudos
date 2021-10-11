@@ -1,5 +1,6 @@
 ﻿using Conteo_y_recaudo.Entities;
 using Conteo_y_recaudo.Interfaces;
+using Conteo_y_recaudo.Specifications;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -22,9 +23,20 @@ namespace Conteo_y_recaudo.Services
             _config = config;
         }
 
-        public async Task<IReadOnlyList<Recaudo>> GetRecaudosAsync()
+        public async Task<RecaudoData> GetRecaudosAsync(RecaudoSpecParams recaudoParams)
         {
-            return await _unitOfWork.Repository<Recaudo>().ListAllAsync();
+            var spec = new RecaudoSpecification(recaudoParams);
+            var countSpec = new RecaudoConFiltrosCantidadSpecification(recaudoParams);
+            var totalItems = await _unitOfWork.Repository<Recaudo>().CountAsync(countSpec);
+            var recaudos = await _unitOfWork.Repository<Recaudo>().ListAsync(spec);
+
+            var recaudosData = new RecaudoData
+            {
+                Recaudos = recaudos,
+                TotalItems = totalItems
+            };
+
+            return recaudosData;
         }
 
         private async Task<string> AutenticarAPIRecaudos(CredencialApiRecaudos credenciales)
