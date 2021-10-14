@@ -42,8 +42,6 @@ namespace Conteo_y_recaudo.Services
                 TotalItems = totalItems
             };
 
-           
-
             return recaudosData;
         }
 
@@ -108,13 +106,13 @@ namespace Conteo_y_recaudo.Services
         public async Task<DataReporte> GetDataReporteRecaudo(RecaudoSpecParams recaudoParams)
         {
             DateTime fechaUltimos3Meses = DateTime.Now.AddMonths(-3);
-
+         
             DataReporte recaudos;
             List<ConsultaRecaudosPorFechaYEstacion> lstConsultaRecaudosPorFechaYEstacion;
-            List<RecaudosPorEstacion> recaudosPorEstacion;
+            List<RecaudosPorEstacion> lstRecaudosPorEstacion;
             List<DataRecaudosFechaEstacion> lstDataRecaudosPorFechaYEstacion = new List<DataRecaudosFechaEstacion>();
             DataRecaudosFechaEstacion dataRecaudosFechaEstacion;
-
+            
             lstConsultaRecaudosPorFechaYEstacion = await _context.Recaudos.
                  Where(r => r.Fecha >= fechaUltimos3Meses).
                  GroupBy(r => new { r.Estacion, r.Fecha }).
@@ -158,7 +156,7 @@ namespace Conteo_y_recaudo.Services
                 }
             }
 
-            recaudosPorEstacion = await _context.Recaudos.
+            lstRecaudosPorEstacion = await _context.Recaudos.
                  Where(r => r.Fecha >= fechaUltimos3Meses).
                  GroupBy(r => new { r.Estacion}).
                  Select(g => new RecaudosPorEstacion
@@ -168,7 +166,7 @@ namespace Conteo_y_recaudo.Services
                      TotalValor = g.Sum(c => c.ValorTabulado).ToString()
                  }).ToListAsync();
 
-            foreach (var consultaRecaudo in recaudosPorEstacion)
+            foreach (var consultaRecaudo in lstRecaudosPorEstacion)
             {
                 RecaudosPorEstacion recaudosEstacion = new RecaudosPorEstacion
                 {
@@ -193,7 +191,8 @@ namespace Conteo_y_recaudo.Services
             {
                 DataRecaudosFechaEstacion = lstDataRecaudosPorFechaYEstacion,
                 TotalCantidad = recaudosTotalCantidad,
-                TotalValor = recaudosTotalValor
+                TotalValor = recaudosTotalValor,
+                TotalItems = recaudosTotalCantidad
             };
 
             return  recaudos;

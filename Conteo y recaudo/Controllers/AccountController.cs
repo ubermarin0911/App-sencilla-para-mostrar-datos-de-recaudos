@@ -16,12 +16,10 @@ namespace Conteo_y_recaudo.Controllers
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly ITokenService _tokenService;
-        private readonly IMapper _mapper;
-
+     
         public AccountController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager,
         ITokenService tokenService, IMapper mapper)
         {
-            _mapper = mapper;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _userManager = userManager;

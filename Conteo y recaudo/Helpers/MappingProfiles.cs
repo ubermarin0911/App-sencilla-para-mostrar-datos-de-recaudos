@@ -8,10 +8,12 @@ namespace Conteo_y_recaudo.Helpers
     {
         public MappingProfiles()
         {
-            CreateMap<Recaudo, RecaudoARetornarDto>();
+            CreateMap<Recaudo, RecaudoARetornarDto>().
+                ForMember(d => d.Fecha, o => o.MapFrom(s => s.Fecha.ToString("dd/MM/yyyy")));
             CreateMap<DataReporte, DataReporteDto>();
             CreateMap<DataRecaudosFechaEstacion, DataRecaudosFechaEstacionDto>();
-            CreateMap<FechaCantidadValor, FechaCantidadValorDto>();
+            CreateMap<FechaCantidadValor, FechaCantidadValorDto>().
+                ForMember(d => d.Fecha, o => o.MapFrom(s => s.Fecha.ToString("dd/MM/yyyy")));
             CreateMap<RecaudosPorEstacion, RecaudosPorEstacionDto>();
         }
     }

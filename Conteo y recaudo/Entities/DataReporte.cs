@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Conteo_y_recaudo.Entities
 {
-    public class ConsultaRecaudosPorFechaYEstacion
+    public class ConsultaRecaudosPorFechaYEstacion : BaseEntity
     {
         public string Estacion { get; set; }
         public DateTime Fecha { get; set; }

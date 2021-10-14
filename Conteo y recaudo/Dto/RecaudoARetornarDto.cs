@@ -9,6 +9,6 @@ namespace Conteo_y_recaudo.Dto
         public short Hora { get; set; }
         public string Categoria { get; set; }
         public long ValorTabulado { get; set; }
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
     }
 }

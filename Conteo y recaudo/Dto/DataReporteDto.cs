@@ -13,7 +13,7 @@ namespace Conteo_y_recaudo.Dto
 
     public class FechaCantidadValorDto
     {
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
         public int TotalCantidad { get; set; }
         public string TotalValor { get; set; }
     }
@@ -29,5 +29,6 @@ namespace Conteo_y_recaudo.Dto
         public IReadOnlyList<DataRecaudosFechaEstacionDto> DataRecaudosFechaEstacion { get; set; }
         public int TotalCantidad { get; set; }
         public long TotalValor { get; set; }
+
     }
 }
