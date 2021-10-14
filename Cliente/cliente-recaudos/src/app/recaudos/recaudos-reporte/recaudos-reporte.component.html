@@ -1,1 +1,56 @@
-<p>recaudos-reporte works!</p>
+<div class="container mt-5">
+    <h1>Reporte de valor tabulado mensual</h1>
+    <table class="table table-bordered d-flex justify-content-center" >
+        <span *ngFor="let recaudo of recaudosFechaEstacion;" class="mx-2">
+          <tr>
+            <th colspan="3" class="text-center">{{recaudo.estacion}}</th>
+          </tr>
+         
+          <tr>
+            <th scope="col" colspan="1"><b>Fecha</b> </th>
+            <th scope="col" colspan="1"><b>Cantidad</b> </th>
+            <th scope="col" colspan="1"><b>Valor</b></th>
+          </tr>
+
+          <tr *ngFor="let recaudoFCV of recaudo.fechaCantidadValor | paginate: { itemsPerPage: recaudoParams.pageSize, 
+            currentPage: recaudoParams.pageNumber, 
+            totalItems: totalCount }">
+            <td scope="col">{{recaudoFCV.fecha}}</td>
+            <td scope="col">{{recaudoFCV.totalCantidad}}</td>
+            <td scope="col">${{recaudoFCV.totalValor | number}}</td>
+          </tr>
+
+          <tr>
+            <th scope="col" colspan="1" class="text-center"><b>Total cantidad</b> </th>
+            <th scope="col" colspan="2" class="text-center"><b>Total valor</b> </th>
+          </tr>
+          
+          <tr>
+            <td colspan="1" class="text-center">{{recaudo.recaudosEstacion.totalCantidad}}</td>
+            <td colspan="2" class="text-center">$ {{recaudo.recaudosEstacion.totalValor | number}}</td>
+          </tr>
+        </span>
+    </table>
+
+    <table class="table table-bordered d-flex justify-content-start ml-2">
+      <span>
+        <tr>
+          <th class="text-center">Total cantidad</th>
+          <th class="text-center">Total valor</th>
+        </tr>
+        
+        <tr>
+          <td class="text-center">{{recaudos.totalCantidad}}</td>
+          <td class="text-center">$ {{recaudos.totalValor | number}}</td>
+        </tr>
+      </span>
+    </table>
+
+    <div class="d-flex justify-content-center" *ngIf="totalCount > 0">
+        <pagination-controls (pageChange)="onPageChanged($event)" 
+            previousLabel="Anterior"
+            nextLabel="Siguiente">
+        </pagination-controls>
+    </div>
+
+</div>

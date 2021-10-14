@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IRecaudo } from 'src/app/shared/models/recaudo';
+import { DataReporte, IDataReporte } from 'src/app/shared/models/dataReporte';
 import { RecaudoParams } from 'src/app/shared/models/recaudoParams';
+import { RecaudosPorEstacion } from 'src/app/shared/models/RecaudosPorEstacion';
+import { RecaudosPorFechaYEstacion } from 'src/app/shared/models/recaudosPorFechaYEstacion';
 import { RecaudosService } from '../recaudos.service';
 
 @Component({
@@ -11,7 +13,8 @@ import { RecaudosService } from '../recaudos.service';
 export class RecaudosReporteComponent implements OnInit {
 
   recaudoParams : RecaudoParams;
-  recaudos: IRecaudo[] = [];
+  recaudos: DataReporte;
+  recaudosFechaEstacion: RecaudosPorFechaYEstacion[] = [];
   totalCount : number;
 
   constructor(private recaudoService: RecaudosService) { 
@@ -19,7 +22,7 @@ export class RecaudosReporteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getRecaudos();
+    this.getRecaudosReporte();
   }
 
   onPageChanged(event : any){
@@ -27,17 +30,17 @@ export class RecaudosReporteComponent implements OnInit {
     if (params.pageNumber !== event) {
       params.pageNumber = event;
       this.recaudoService.setRecaudoParams(params);
-      this.getRecaudos();
+      this.getRecaudosReporte();
     }
   }
 
-  getRecaudos(){
-    this.recaudoService.getRecaudos().subscribe(response => {
-      this.recaudos = response.data;
+  getRecaudosReporte(){
+    this.recaudoService.getRecaudosReporte().subscribe(response => {
+      this.recaudos = response.dataObject;
+      this.recaudosFechaEstacion = response.dataObject.dataRecaudosFechaEstacion;
       this.totalCount = response.count;
     }, error => {
       console.log(error);
     });
   }
-
 }

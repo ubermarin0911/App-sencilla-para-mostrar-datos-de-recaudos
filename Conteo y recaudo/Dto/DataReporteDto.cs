@@ -4,25 +4,30 @@ using System.Text;
 
 namespace Conteo_y_recaudo.Dto
 {
-    public class RecaudosPorFechaYEstacion
+
+    public class DataRecaudosFechaEstacionDto
+    {
+        public string Estacion { get; set; }
+        public IReadOnlyList<FechaCantidadValorDto> FechaCantidadValor { get; set; }
+        public RecaudosPorEstacionDto RecaudosEstacion { get; set; }
+    }
+
+    public class FechaCantidadValorDto
     {
         public DateTime Fecha { get; set; }
-        public string Estacion { get; set; }
         public int TotalCantidad { get; set; }
         public string TotalValor { get; set; }
     }
 
-    public class RecaudosPorEstacion
+    public class RecaudosPorEstacionDto
     {
-        public string Estacion { get; set; }
         public int TotalCantidad { get; set; }
         public string TotalValor { get; set; }
     }
 
     public class DataReporteDto
     {
-        public IReadOnlyList<RecaudosPorFechaYEstacion> RecaudosFechaEstacion { get; set; }
-        public IReadOnlyList<RecaudosPorEstacion> RecaudosEstacion { get; set; }
+        public IReadOnlyList<DataRecaudosFechaEstacionDto> DataRecaudosFechaEstacion { get; set; }
         public int TotalCantidad { get; set; }
         public long TotalValor { get; set; }
     }

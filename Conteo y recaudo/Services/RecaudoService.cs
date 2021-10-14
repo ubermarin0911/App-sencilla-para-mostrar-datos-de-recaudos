@@ -110,14 +110,16 @@ namespace Conteo_y_recaudo.Services
             DateTime fechaUltimos3Meses = DateTime.Now.AddMonths(-3);
 
             DataReporte recaudos;
-            List<RecaudosPorFechaYEstacion> recaudosPorFechaYEstacion;
+            List<ConsultaRecaudosPorFechaYEstacion> lstConsultaRecaudosPorFechaYEstacion;
             List<RecaudosPorEstacion> recaudosPorEstacion;
+            List<DataRecaudosFechaEstacion> lstDataRecaudosPorFechaYEstacion = new List<DataRecaudosFechaEstacion>();
+            DataRecaudosFechaEstacion dataRecaudosFechaEstacion;
 
-            recaudosPorFechaYEstacion = await _context.Recaudos.
+            lstConsultaRecaudosPorFechaYEstacion = await _context.Recaudos.
                  Where(r => r.Fecha >= fechaUltimos3Meses).
                  GroupBy(r => new { r.Estacion, r.Fecha }).
                  OrderBy(g => g.Key.Fecha).
-                 Select(g => new RecaudosPorFechaYEstacion
+                 Select(g => new ConsultaRecaudosPorFechaYEstacion
                  {
                      Estacion = g.Key.Estacion,
                      Fecha = g.Key.Fecha,
@@ -127,6 +129,34 @@ namespace Conteo_y_recaudo.Services
                  .Skip(recaudoParams.PageSize * (recaudoParams.PageIndex - 1))
                  .Take(recaudoParams.PageSize)
                  .ToListAsync();
+
+            lstDataRecaudosPorFechaYEstacion.Clear();
+            foreach (var consultaRecaudo in lstConsultaRecaudosPorFechaYEstacion)
+            {
+                FechaCantidadValor fechaCantidadValor = new FechaCantidadValor
+                {
+                    Fecha = consultaRecaudo.Fecha,
+                    TotalCantidad = consultaRecaudo.TotalCantidad,
+                    TotalValor = consultaRecaudo.TotalValor
+                };
+
+                dataRecaudosFechaEstacion = lstDataRecaudosPorFechaYEstacion.
+                  Select(r => r).Where(r => r.Estacion == consultaRecaudo.Estacion).FirstOrDefault();
+
+                if (dataRecaudosFechaEstacion != null)
+                {
+                    dataRecaudosFechaEstacion.FechaCantidadValor.Add(fechaCantidadValor);
+                }
+                else
+                {
+                    dataRecaudosFechaEstacion = new DataRecaudosFechaEstacion();
+                    dataRecaudosFechaEstacion.FechaCantidadValor = new List<FechaCantidadValor>();
+
+                    dataRecaudosFechaEstacion.Estacion = consultaRecaudo.Estacion;
+                    dataRecaudosFechaEstacion.FechaCantidadValor.Add(fechaCantidadValor);
+                    lstDataRecaudosPorFechaYEstacion.Add(dataRecaudosFechaEstacion);
+                }
+            }
 
             recaudosPorEstacion = await _context.Recaudos.
                  Where(r => r.Fecha >= fechaUltimos3Meses).
@@ -138,13 +168,30 @@ namespace Conteo_y_recaudo.Services
                      TotalValor = g.Sum(c => c.ValorTabulado).ToString()
                  }).ToListAsync();
 
+            foreach (var consultaRecaudo in recaudosPorEstacion)
+            {
+                RecaudosPorEstacion recaudosEstacion = new RecaudosPorEstacion
+                {
+                    Estacion = consultaRecaudo.Estacion,
+                    TotalCantidad = consultaRecaudo.TotalCantidad,
+                    TotalValor = consultaRecaudo.TotalValor
+                };
+
+                dataRecaudosFechaEstacion = lstDataRecaudosPorFechaYEstacion.
+                Select(r => r).Where(r => r.Estacion == consultaRecaudo.Estacion).FirstOrDefault();
+
+                if (dataRecaudosFechaEstacion != null)
+                {
+                    dataRecaudosFechaEstacion.RecaudosEstacion = recaudosEstacion;
+                }
+            }
+
             var recaudosTotalCantidad = await _context.Recaudos.Where(r => r.Fecha >= fechaUltimos3Meses).CountAsync();
             var recaudosTotalValor = await _context.Recaudos.Where(r => r.Fecha >= fechaUltimos3Meses).SumAsync(s => s.ValorTabulado);
 
             recaudos = new DataReporte
             {
-                RecaudosFechaEstacion = recaudosPorFechaYEstacion,
-                RecaudosEstacion = recaudosPorEstacion,
+                DataRecaudosFechaEstacion = lstDataRecaudosPorFechaYEstacion,
                 TotalCantidad = recaudosTotalCantidad,
                 TotalValor = recaudosTotalValor
             };

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
 import { IRecaudo } from 'src/app/shared/models/recaudo';
 import { RecaudoParams } from 'src/app/shared/models/recaudoParams';
 import { RecaudosService } from '../recaudos.service';
@@ -36,6 +35,7 @@ export class RecaudosDatosComponent implements OnInit {
     this.recaudoService.getRecaudos().subscribe(response => {
       this.recaudos = response.data;
       this.totalCount = response.count;
+      debugger
     }, error => {
       console.log(error);
     });

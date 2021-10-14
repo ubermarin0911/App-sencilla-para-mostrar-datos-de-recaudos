@@ -10,8 +10,9 @@ namespace Conteo_y_recaudo.Helpers
         {
             CreateMap<Recaudo, RecaudoARetornarDto>();
             CreateMap<DataReporte, DataReporteDto>();
-            CreateMap<Entities.RecaudosPorFechaYEstacion, Dto.RecaudosPorFechaYEstacion>();
-            CreateMap<Entities.RecaudosPorEstacion, Dto.RecaudosPorEstacion>();
+            CreateMap<DataRecaudosFechaEstacion, DataRecaudosFechaEstacionDto>();
+            CreateMap<FechaCantidadValor, FechaCantidadValorDto>();
+            CreateMap<RecaudosPorEstacion, RecaudosPorEstacionDto>();
         }
     }
 }

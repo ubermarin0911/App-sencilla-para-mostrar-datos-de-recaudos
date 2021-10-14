@@ -4,12 +4,14 @@ using Conteo_y_recaudo.Entities;
 using Conteo_y_recaudo.Helpers;
 using Conteo_y_recaudo.Interfaces;
 using Conteo_y_recaudo.Specifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Conteo_y_recaudo.Controllers
 {
+   
     public class RecaudosController : BaseApiController
     {
         private readonly IMapper _mapper;
@@ -41,7 +43,7 @@ namespace Conteo_y_recaudo.Controllers
         }
 
         [HttpGet("dataReporteRecaudo")]
-        public async Task<ActionResult<Pagination<DataReporte>> > GetDataReporteRecaudo([FromQuery] RecaudoSpecParams recaudoParams)
+        public async Task<ActionResult<Pagination<DataReporteDto>> > GetDataReporteRecaudo([FromQuery] RecaudoSpecParams recaudoParams)
         {
             var dataReporteRecaudo = await _recaudoService.GetDataReporteRecaudo(recaudoParams);
 
