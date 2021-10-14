@@ -35,7 +35,6 @@ export class RecaudosDatosComponent implements OnInit {
     this.recaudoService.getRecaudos().subscribe(response => {
       this.recaudos = response.data;
       this.totalCount = response.count;
-      debugger
     }, error => {
       console.log(error);
     });

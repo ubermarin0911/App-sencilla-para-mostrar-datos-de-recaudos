@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Conteo_y_recaudo.Controllers
 {
-   
+    [Authorize]
     public class RecaudosController : BaseApiController
     {
         private readonly IMapper _mapper;

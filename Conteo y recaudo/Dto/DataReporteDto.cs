@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Conteo_y_recaudo.Dto
 {
-
     public class DataRecaudosFechaEstacionDto
     {
         public string Estacion { get; set; }
