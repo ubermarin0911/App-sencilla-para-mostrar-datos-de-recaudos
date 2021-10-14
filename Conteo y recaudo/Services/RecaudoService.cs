@@ -112,8 +112,9 @@ namespace Conteo_y_recaudo.Services
             List<RecaudosPorEstacion> lstRecaudosPorEstacion;
             List<DataRecaudosFechaEstacion> lstDataRecaudosPorFechaYEstacion = new List<DataRecaudosFechaEstacion>();
             DataRecaudosFechaEstacion dataRecaudosFechaEstacion;
-            
-            lstConsultaRecaudosPorFechaYEstacion = await _context.Recaudos.
+            int totalItems = 0;
+
+            var consultaRecaudosFechaEstacion = _context.Recaudos.
                  Where(r => r.Fecha >= fechaUltimos3Meses).
                  GroupBy(r => new { r.Estacion, r.Fecha }).
                  OrderBy(g => g.Key.Fecha).
@@ -123,10 +124,15 @@ namespace Conteo_y_recaudo.Services
                      Fecha = g.Key.Fecha,
                      TotalCantidad = g.Count(),
                      TotalValor = g.Sum(c => c.ValorTabulado).ToString()
-                 })
+                 });
+
+            lstConsultaRecaudosPorFechaYEstacion = await consultaRecaudosFechaEstacion
                  .Skip(recaudoParams.PageSize * (recaudoParams.PageIndex - 1))
                  .Take(recaudoParams.PageSize)
                  .ToListAsync();
+
+             totalItems = await consultaRecaudosFechaEstacion
+                 .CountAsync();
 
             lstDataRecaudosPorFechaYEstacion.Clear();
             foreach (var consultaRecaudo in lstConsultaRecaudosPorFechaYEstacion)
@@ -192,7 +198,7 @@ namespace Conteo_y_recaudo.Services
                 DataRecaudosFechaEstacion = lstDataRecaudosPorFechaYEstacion,
                 TotalCantidad = recaudosTotalCantidad,
                 TotalValor = recaudosTotalValor,
-                TotalItems = recaudosTotalCantidad
+                TotalItems = totalItems
             };
 
             return  recaudos;

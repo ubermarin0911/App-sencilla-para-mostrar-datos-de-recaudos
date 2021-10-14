@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -16,6 +16,12 @@ export class RecaudosService {
   paginationReporte = new PaginationReporte();
   recaudoParams = new RecaudoParams();
 
+  headers = new HttpHeaders({
+    'Authorization' : 'Bearer ' + localStorage.getItem('token'),
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  });
+
   constructor(private http: HttpClient) { }
 
   getRecaudos(){
@@ -25,7 +31,7 @@ export class RecaudosService {
     params = params.append('pageIndex', this.recaudoParams.pageNumber.toString());
     params = params.append('pageSize', this.recaudoParams.pageSize.toString());
 
-    return this.http.get<IPagination>(this.baseUrl + 'recaudos', {observe: 'response', params})
+    return this.http.get<IPagination>(this.baseUrl + 'recaudos', {observe: 'response', params, headers:this.headers})
       .pipe(
         map(response => {
           this.pagination = response.body;
@@ -42,7 +48,7 @@ export class RecaudosService {
     params = params.append('pageIndex', this.recaudoParams.pageNumber.toString());
     params = params.append('pageSize', this.recaudoParams.pageSize.toString());
 
-    return this.http.get<IPaginationReporte>(this.baseUrl + 'recaudos/dataReporteRecaudo', {observe: 'response', params})
+    return this.http.get<IPaginationReporte>(this.baseUrl + 'recaudos/dataReporteRecaudo', {observe: 'response', params, headers:this.headers})
       .pipe(
         map(response => {
           this.paginationReporte = response.body;

@@ -3,10 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from './core/interceptors/jwt-interceptor.interceptor';
-import { RecaudosDatosComponent } from './recaudos/recaudos-datos/recaudos-datos.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule} from '@angular/common/http';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -16,11 +14,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule
+    CoreModule
   ],
-  providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

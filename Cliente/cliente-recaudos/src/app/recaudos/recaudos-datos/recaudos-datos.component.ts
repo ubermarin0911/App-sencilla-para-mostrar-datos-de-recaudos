@@ -19,6 +19,7 @@ export class RecaudosDatosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  
     this.getRecaudos();
   }
 

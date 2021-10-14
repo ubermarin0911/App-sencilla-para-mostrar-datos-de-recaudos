@@ -22,6 +22,7 @@ export class RecaudosReporteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+   
     this.getRecaudosReporte();
   }
 

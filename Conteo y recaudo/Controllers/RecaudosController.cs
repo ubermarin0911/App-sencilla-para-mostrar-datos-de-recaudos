@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Conteo_y_recaudo.Dto;
 using Conteo_y_recaudo.Entities;
+using Conteo_y_recaudo.Errors;
 using Conteo_y_recaudo.Helpers;
 using Conteo_y_recaudo.Interfaces;
 using Conteo_y_recaudo.Specifications;

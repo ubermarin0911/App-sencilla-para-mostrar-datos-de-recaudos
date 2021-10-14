@@ -17,21 +17,6 @@ export class AccountService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  loadCurrentUser(token: string){
-    if(token === null){
-        this.currentUserSource.next(undefined);
-        return of(null);
-    }
-     return this.http.get<IUsuario>(`${this.baseUrl}account`).pipe(
-       map((user: IUsuario) => {
-        if(user){
-          localStorage.setItem('token', user.token);
-          this.currentUserSource.next(user);
-        }
-       })
-     );
-  }
-
   login(values: any){
     return this.http.post<IUsuario>(`${this.baseUrl}account/login`, values).pipe(
       map((user: IUsuario) => {
