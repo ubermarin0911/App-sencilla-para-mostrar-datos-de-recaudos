@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AccountService } from './account/account.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,19 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'cliente-recaudos';
+
+  constructor(private accountService: AccountService){}
+
+  ngOnInit(): void {
+    this.loadCurrentUser();
+  }
+
+  loadCurrentUser(){
+    const token = localStorage.getItem('token');
+    console.log(token);
+    this.accountService.loadCurrentUser(token).subscribe(() => {
+    }, error => {
+      console.log(error);
+    });
+  }
 }

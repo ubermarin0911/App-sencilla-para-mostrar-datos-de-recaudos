@@ -1,0 +1,21 @@
+<nav>
+    <ul class="menu">
+        
+        <div class="container-nav" >
+            <li #item class="item link"><a [routerLink]="[ '/recaudos' ]" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">Inicio</a></li>
+            <li #item class="item link"><a [routerLink]="[ '/recaudos/reporte' ]" routerLinkActive="active">Reporte</a></li>
+        </div>
+    
+        <div class="container-nav" >
+            <ng-container *ngIf="(currentUser$ | async) as currentUser">
+                <div class="ml-3 mr-5">
+                    <strong class="usuario">Bienvenido(a) {{ (currentUser$ | async).nombre }}</strong>
+                </div>
+            </ng-container>
+        </div>
+        <div class="container-nav">
+            <li #item class="item link"><a (click)="logout()" routerLink="" >Cerrar sesión</a></li>
+        </div>
+    </ul>
+    </nav>

@@ -3,6 +3,10 @@
     margin-right: auto;
   }
 
-  .table-bordered{
-    border: none;
-  }
+.table-bordered{
+  border: none;
+}
+
+.reporte{
+  margin-top: 5rem;
+}

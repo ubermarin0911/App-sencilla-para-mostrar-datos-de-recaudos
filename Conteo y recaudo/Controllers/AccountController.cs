@@ -25,7 +25,6 @@ namespace Conteo_y_recaudo.Controllers
             _userManager = userManager;
         }
 
-
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<UsuarioDto>> GetCurrentUser()

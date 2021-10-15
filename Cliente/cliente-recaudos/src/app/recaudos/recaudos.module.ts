@@ -15,7 +15,7 @@ import { RecaudosReporteComponent } from './recaudos-reporte/recaudos-reporte.co
     CommonModule,
     RecaudosRoutingModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ]
 })
 export class RecaudosModule { }
