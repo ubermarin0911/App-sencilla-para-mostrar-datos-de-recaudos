@@ -31,7 +31,6 @@ export class AccountService {
     }
      return this.http.get<IUsuario>(`${this.baseUrl}account`, {headers:this.headers}).pipe(
        map((user: IUsuario) => {
-        debugger
         if(user){
           localStorage.setItem('token', user.token);
           this.currentUserSource.next(user);

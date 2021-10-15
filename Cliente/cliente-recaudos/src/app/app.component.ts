@@ -17,7 +17,6 @@ export class AppComponent {
 
   loadCurrentUser(){
     const token = localStorage.getItem('token');
-    console.log(token);
     this.accountService.loadCurrentUser(token).subscribe(() => {
     }, error => {
       console.log(error);
