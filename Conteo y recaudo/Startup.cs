@@ -34,7 +34,7 @@ namespace Conteo_y_recaudo
             services.AddIdentityServices(Configuration);
 
             services.AddControllers();
-
+            services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -55,11 +55,10 @@ namespace Conteo_y_recaudo
             }
 
             app.UseRouting();
-
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-            
+            app.UseSwaggerDocumentation();
 
             app.UseEndpoints(endpoints =>
             {
