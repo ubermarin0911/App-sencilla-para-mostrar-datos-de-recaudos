@@ -1,4 +1,4 @@
-# PruebaTecnicaF2X
+# App de reportes de recaudos
 
 Para iniciar sesión se pueden usar las credenciales de prueba:
 
